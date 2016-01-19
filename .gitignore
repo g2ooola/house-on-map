@@ -19,5 +19,8 @@
 /recode/*
 
 /config/database.yml
+/config/secrets.yml
 /public/assets/**
 /recode/*
+
+.DS_Store

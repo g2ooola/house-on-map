@@ -6,7 +6,10 @@ gem 'rails', '4.1.7'
 # Use pg as the database for Active Record
 gem 'pg'
 # Use SCSS for stylesheets
+gem 'bootstrap-sass', '>= 3'
 gem 'sass-rails', '~> 4.0.3'
+gem 'bootstrap-datepicker-rails'
+
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .js.coffee assets and views
@@ -37,6 +40,11 @@ gem 'spring',        group: :development
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
+gem 'debugger2', group: [:development, :test]
+
+# active record plag-in
+gem 'activerecord-import'
+gem 'rails-observers'
 
 # parse html
 gem 'nokogiri'
@@ -44,3 +52,10 @@ gem 'nokogiri'
 # javascript
 # gem 'underscore-rails'
 # gem 'gmaps4rails'
+
+
+# gem 'momentjs-rails', '>= 2.9.0'
+# gem 'bootstrap3-datetimepicker-rails', '~> 4.17.37'
+
+# read yml file
+gem 'settingslogic'

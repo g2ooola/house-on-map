@@ -1,0 +1,85 @@
+default: &default
+  range: !ruby/range 0..18
+  delta:
+    -
+      zoom: 0
+      lat: 180
+      lng: 360
+    -
+      zoom: 1
+      lat: 180
+      lng: 360
+    -
+      zoom: 2
+      lat: 78.75
+      lng: 110.2
+    -
+      zoom: 3
+      lat: 219.375
+      lng: 61.931
+    -
+      zoom: 4
+      lat: 70.313
+      lng: 31.967
+    -
+      zoom: 5
+      lat: 35.156
+      lng: 16.113
+    -
+      zoom: 6
+      lat: 17.578
+      lng: 8.073
+    -
+      zoom: 7
+      lat: 8.789
+      lng: 4.038
+    -
+      zoom: 8
+      lat: 4.395
+      lng: 2.019
+    -
+      zoom: 9
+      lat: 2.197
+      lng: 1.010
+    -
+      zoom: 10
+      lat: 1.099
+      lng: 0.505
+    -
+      zoom: 11
+      lat: 0.549
+      lng: 0.252
+    -
+      zoom: 12
+      lat: 0.275
+      lng: 0.126
+    -
+      zoom: 13
+      lat: 0.137
+      lng: 0.063
+    -
+      zoom: 14
+      lat: 0.069
+      lng: 0.032
+    -
+      zoom: 15
+      lat: 0.0343
+      lng: 0.0158
+    -
+      zoom: 16
+      lat: 0.0172
+      lng: 0.0079
+    -
+      zoom: 17
+      lat: 0.0086
+      lng: 0.0039
+    -
+      zoom: 18
+      lat: 0.00429
+      lng: 0.00197
+
+development:
+  <<: *default
+
+production:
+  <<: *default

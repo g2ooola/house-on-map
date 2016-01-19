@@ -1,30 +1,33 @@
-$ ->
-  google.maps.event.addDomListener(window, 'load', init)
-  test_init()
+# $ ->
+#   google.maps.event.addDomListener(window, 'load', init)
+#   test_init()
+
+
 
 map = null
 init = ->
-  mapOption = 
-    zoom: 12
+  mapOption =
+    zoom: 18
     center: new (google.maps.LatLng)(23.2, 120.3)
 
   map = new (google.maps.Map)($('#map')[0], mapOption)
+  # test_init()
 
 test_init = ->
   $('#test_button').on 'click', ->
     # alert("ya")
-    # alert 
+    # alert
 
     latlng = map.getCenter()
     zoom   = map.getZoom()
-    url = "#{window.location.protocol}//#{window.location.host}/api/search/test.json"
-    
+    url = "#{window.location.protocol}//#{window.location.host}/api/search/latlng.json"
+
 
     bounds = map.getBounds()
     console.log "bounds.getNorthEast() #{bounds.getNorthEast().lat()} #{bounds.getNorthEast().lng()}"
     console.log "bounds.getSouthWest() #{bounds.getSouthWest().lat()} #{bounds.getSouthWest().lng()}"
-    alert "zoom #{map.getZoom()}, lat = #{bounds.getNorthEast().lat() - bounds.getSouthWest().lat()}, lng = #{bounds.getNorthEast().lng() - bounds.getSouthWest().lng()}"
-
+    console.log "zoom #{map.getZoom()}, lat = #{bounds.getNorthEast().lat() - bounds.getSouthWest().lat()}, lng = #{bounds.getNorthEast().lng() - bounds.getSouthWest().lng()}"
+    console.log ""
 
     beachMarker = new google.maps.Marker
       position: bounds.getNorthEast()
@@ -39,7 +42,7 @@ test_init = ->
     $.ajax
       type: 'get'
       url: url
-      data: 
+      data:
         zoom: zoom
         lat:  latlng.lat()
         lng:  latlng.lng()
@@ -67,7 +70,3 @@ test_init = ->
       always: (response) ->
         # bundles = map.getBundles()
         # console.log {bundle: map.}
-
-        
-
-      

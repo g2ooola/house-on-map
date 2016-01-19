@@ -1,0 +1,67 @@
+check
+
+<!-- <input type='text' class="form-control" id='datetimepicker4' /> -->
+<%= params %>
+<%= form_tag house_check_path, method: :post do %>
+  <div class="container">
+    <div class="row">
+      <div class="datepicker_container col-sm-3">
+        <%#= text_field :main_date,  @default_main_date,  class: 'datepicker', placeholder: 'Main Date', id: 'main_date' %>
+        <%= text_field_tag :main_date,  @default_main_date,  class: 'datepicker', placeholder: 'Main Date', id: 'main_date' %>
+      </div>
+      <div class="datepicker_container col-sm-3">
+        <%#= text_field :check_date, @default_check_date, class: 'datepicker', placeholder: 'Check Date', id: 'check_date' %>
+        <%= text_field_tag :check_date, @default_check_date, class: 'datepicker', placeholder: 'Check Date', id: 'check_date' %>
+      </div>
+    </div>
+  </div>
+  <%= submit_tag %>
+<% end %>
+
+<div>main date :  <span><%= params[:main_date] %></span></div>
+<div>check date : <span><%= params[:check_date] %></span></div>
+
+---
+<%#= @sources %>
+--
+<%#= @all_date %>
+--
+<table>
+  <thead>
+    <tr>
+      <th class='col-xs-2'>feature id</th>
+      <%= @all_date.each do |date| %>
+        <%= content_tag :th, date, class: 'col-xs-1' %>
+      <% end %>
+      <th class='col-xs-8'>content</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @sources.each do |feature_id, date_source_hash| %>
+      <tr>
+        <%= content_tag :td, feature_id %>
+        <% @all_date.each do |date| %>
+          <%= content_tag :td, date_source_hash[date].price %>
+        <% end %>
+        <%= content_tag :td, date_source_hash.values[0] %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+---
+<!--
+<div><span></span>
+  <%= @all_date.each do |date| %>
+    <%= content_tag :span, date %>
+  <% end %>
+</div>
+<% @sources.each do |feature_id, date_source_hash| %>
+  <div>
+  <%= content_tag :span, feature_id %>
+  <% @all_date.each do |date| %>
+    <%= content_tag :span, date_source_hash[date] %>
+  <% end %>
+</div>
+<% end %>
+-->

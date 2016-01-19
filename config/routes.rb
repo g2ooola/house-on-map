@@ -3,10 +3,12 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   get 'house-map' => 'house_maps#index'
+  get 'house-check' => 'house_maps#check'
+  post 'house-check' => 'house_maps#check'
   get 'house-map/tset' => 'house_maps#test'
 
   namespace :api do
-    get 'search/test' => 'search_api#test', :defaults => { :format => 'json' }
+    get 'search/latlng' => 'search_api#latlng', :defaults => { :format => 'json' }
   end
 
   # You can have the root of your site routed with "root"

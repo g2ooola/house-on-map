@@ -1,7 +1,13 @@
 class HouseInfo < ActiveRecord::Base
+  has_many :grid_ids
+
+  # after_save :update_grid_num # :if => Proc.new { |house_info| house_info.previous_changes }
   def self.update_using_source(source_house_info)
-    house_info = self.find_or_create_by!(feature_id: source_house_info.feature_id)
+    house_info = self.find_or_initialize_by(feature_id: source_house_info.feature_id)
     house_info.update_using_source(source_house_info)
+
+
+
   end
 
   def update_using_source(source_house_info)
@@ -31,5 +37,33 @@ class HouseInfo < ActiveRecord::Base
     source_house_info.is_marged = true
     source_house_info.save
     self.save
+  end
+
+  def coords_present?
+    self.coord_longitude.present? && self.coord_latitude.present?
+  end
+  # def update_grid_num
+  #   puts " == previous_changes #{coord_longitude_changed?}"
+  #   puts " == previous_changes #{coord_latitude_changed?}"
+  #   if coord_longitude_changed? || coord_latitude_changed?
+  #     ::GridId.create_of_update_grid_for_house_info!(self)
+  #   end
+  # end
+
+  # def self.in_grid(grid_index, zoom_level)
+  #   self.joins(:grid_ids) #.reference(:grid_ids)
+  #   .where(grid_ids: {grid_num: grid_index, zoom: zoom_level})
+  # end
+
+  # def self.in_grid(zoom_level, in_lat_id_lng_array)
+  #   condition = '('
+  #   in_lat_id_lng_array.each { |id_infos| condition += "(#{zoom_level}, #{id_infos[0]}, #{id_infos[1]})" }
+  #   condition += ')'
+  #
+  #   self.joins(:grid_ids) #.reference(:grid_ids)
+  #   .where("(grid_ids.zoom, grid_ids.id_lat, grid_ids.id_lng) in #{condition}")
+  # end
+
+  def self.grid_search(center_grid_index, zoom_level)
   end
 end

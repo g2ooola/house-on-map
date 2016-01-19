@@ -25,9 +25,13 @@ class MaterialType < ActiveRecord::Base
 
     # logger.info recode_string
 
-    dir_name = File.dirname(self.class.recode_file_path)
-    unless File.directory?(dir_name)
-      FileUtils.mkdir_p(dir_name)
+    # dir_name = File.dirname(self.class.recode_file_path)
+    # unless File.directory?(dir_name)
+    #   FileUtils.mkdir_p(dir_name)
+    # end
+
+    unless File.directory?(self.class.recode_file_path)
+      FileUtils.mkdir_p(self.class.recode_file_path)
     end
 
     out_file = File.new(self.class.record_file_name, "a")

@@ -15,5 +15,7 @@
 //= require turbolinks
 //= require_tree .
 
+//= require bootstrap-datepicker/core
+
 // require underscore
 // require gmaps/google

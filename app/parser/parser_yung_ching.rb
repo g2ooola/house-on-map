@@ -15,17 +15,17 @@ class ParserYungChing
   def start_parse
     # request_arr = []
     result_hash = {}
-    html_arr = []
     begin
       page_info_html = get_html_by_url(search_url)
       page_num = get_page_num(page_info_html)
       raise " !!! get page_num error" if page_num.nil?
       page_num.times do |page|
+        # break if page > 0
         puts " === in page #{page + 1}"
         list_page_html = get_html_by_url("#{search_url}?pg=#{page+1}")
         # request_arr += parse_list_page(list_page_html)
         result_hash.merge! parse_list_page(page, list_page_html)
-        break 
+
       end
     rescue => e
       puts "  Exception when start parse : #{e}"
@@ -34,6 +34,42 @@ class ParserYungChing
     result_hash
   end
 
+  def parse_and_record(ecxuted_at)
+    result_hash = Hash.new(0)
+    # result_hash = {success_count: 0, error_count: 0, error_keys: 0}
+    # begin
+      page_info_html = get_html_by_url(search_url)
+      page_num = get_page_num(page_info_html)
+      raise " !!! get page_num error" if page_num.nil?
+      page_num.times do |i|
+        page = i + 1
+        puts " === in page #{page}"
+
+        page_url = "#{search_url}?pg=#{page}"
+        list_page_html = get_html_by_url(page_url)
+        # init_html = list_page_html if page == 0
+        # puts " == page url = ||#{page_url}"
+        # puts " == list_page_html = #{list_page_html}"
+        # puts " init_html == list_page_html #{init_html == list_page_html}"
+
+
+        page_list_result = parse_list_page(page, list_page_html)
+        # puts " == page result = #{page_list_result}"
+        # init_page_result = page_list_result if page == 0
+        # puts " init_page_result == page_list_result #{init_page_result == page_list_result}"
+
+        # break if page > 2
+        # next
+        save_result = SourceHouseInfo.seva_parse_result(page_list_result, ecxuted_at)
+        result_hash.merge!(save_result) { |key, oldvalue, newvalue| oldvalue + newvalue }
+        # break if page > 2
+      end
+    # rescue => e
+    #   puts "  Exception when start parse : #{e}"
+    # end
+
+    result_hash
+  end
 private
 
   def search_condition
@@ -42,7 +78,7 @@ private
 
   def get_html_by_url(url)
     begin
-      uri = URI(search_url)
+      uri = URI(url)
       res = Net::HTTP.get_response(uri)
       return nil unless res.is_a?(Net::HTTPSuccess)
 
@@ -57,7 +93,7 @@ private
       last_page_link = html.at_css('.m-pagination-bd li:last-child > a').attr('href')
       path = URI.parse(last_page_link)
       CGI.parse(path.query)["pg"][0].to_i
-    rescue => e 
+    rescue => e
       return nil
     end
   end
@@ -65,6 +101,7 @@ private
   def parse_list_page(list_page_index, html)
     house_info_list = html.css('.l-item-list .m-list-item')
     page_list_result = {}
+    # puts " ==  p begin #{page_list_result}"
     return nil if house_info_list.nil?
     house_info_list.each_with_index do |house_info, item_index|
       begin
@@ -74,6 +111,10 @@ private
         # puts " === house_page_path #{house_page_path}"
         house_page_url = "#{HOST}#{house_page_path}"
         # puts " === house_page_url #{house_page_url}"
+
+        # puts " === house_page_url -- #{house_page_url}"
+        # next
+
         house_page_info = parse_house_page(house_page_url)
         page_list_result["#{list_page_index}_#{item_index}"] = house_page_info
         # puts house_page_info
@@ -81,11 +122,12 @@ private
         puts " error on list_page #{list_page}, item #{item_index}, error_mission => #{e}"
       end
     end
+    # puts " ==  p af #{page_list_result}"
     page_list_result
   end
 
   def parse_house_page(house_page_url)
-    puts " === house_page_url #{house_page_url}"
+    puts " === house_page_url 11 #{house_page_url}"
     # house_info_hash = {}
     begin
       house_info_hash = {}
@@ -119,7 +161,7 @@ private
       house_info_hash[:floor_text] = building_info[2].inner_text.gsub(/\s+/, "")
       house_info_hash[:floor] = house_info_hash[:floor_text].split(/(\d*)\D*.*/)[1].to_i
 
-      # html_house_detail = 
+      # html_house_detail =
       plat_of_land_text = html.at_css('.m-house-detail-list.bg-square .detail-list-lv1 li').inner_text
       house_info_hash[:plat_of_land] = plat_of_land_text.split(/土地坪數：(.*)坪/)[1].to_f
 
@@ -151,7 +193,7 @@ private
 
       # t.string  :address
       # t.float   :coord_longitude
-      # t.float   :coord_latitude 
+      # t.float   :coord_latitude
       house_info_hash[:source_url] = house_page_url
       return house_info_hash
     rescue => e
