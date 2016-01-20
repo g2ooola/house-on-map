@@ -1,0 +1,59 @@
+change
+
+<!-- <input type='text' class="form-control" id='datetimepicker4' /> -->
+
+
+<div>change date :  <span><%= @date %></span></div>
+
+<%= form_tag house_change_path, method: :post do %>
+  <div class="container">
+    <div class="row">
+      <!-- <div class="datepicker_container col-xs-3"> -->
+        <%= label_tag :main_date, 'check date', class: 'col-xs-2 vertical-center' %>
+        <%= text_field_tag :check_date,  @date,  class: 'datepicker col-xs-4 vertical-center', placeholder: 'Main Date', id: 'main_date' %>
+        <%= submit_tag :check, class: 'col-xs-1 vertical-center' %>
+      <!-- </div> -->
+
+    </div>
+  </div>
+
+<% end %>
+
+<!-- <div class="input-group date" data-provide="datepicker">
+    <input type="text" class="form-control">
+    <div class="input-group-addon">
+        <span class="glyphicon glyphicon-th"></span>
+    </div>
+</div> -->
+
+---
+<%#= @sources %>
+--
+<%#= @all_date %>
+--
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th class='col-xs-2'>feature id</th>
+      <% HouseInfoChange.column_names.each do |column_name| %>
+        <%= content_tag :th, column_name, class: 'col-xs-1' %>
+      <% end %>
+      <th class='col-xs-8'>content</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @change_house_infos.each do |house_info_change| %>
+      <tr>
+        <% HouseInfoChange.column_names.each do |column_name| %>
+          <%= content_tag :td, house_info_change.send(column_name) %>
+        <% end %>
+
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+---
+<!--
+
+-->

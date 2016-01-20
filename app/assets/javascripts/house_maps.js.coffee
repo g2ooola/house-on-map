@@ -2,7 +2,8 @@ $ ->
   google.maps.event.addDomListener(window, 'load', init)
 
   $('.datepicker').datepicker({
-    format: 'yyyy/mm/dd';
+    format: 'yyyy/mm/dd'
+    endDate: '1d'
     # startView1: 'days',
     # minViewMode: 'days'
   });

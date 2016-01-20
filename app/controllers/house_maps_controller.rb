@@ -27,6 +27,11 @@ class HouseMapsController < ApplicationController
 
   end
 
+  def change
+    @date = params[:check_date] || Time.now.to_date
+    @change_house_infos = HouseInfoChange.where(changed_date: @date)
+  end
+
   def test
     # redirect_to 'https://play.google.com/store/apps/details?id=com.kdanmobile.android.animationdesk'
     # redirect_to 'https://itunes.apple.com/app/id914548793'

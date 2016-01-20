@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   get 'house-map' => 'house_maps#index'
   get 'house-check' => 'house_maps#check'
   post 'house-check' => 'house_maps#check'
+  get 'house-change' => 'house_maps#change'
+  post 'house-change' => 'house_maps#change'
   get 'house-map/tset' => 'house_maps#test'
 
   namespace :api do
