@@ -36,11 +36,17 @@ gem 'spring',        group: :development
 # gem 'unicorn'
 
 # Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
+group :development do
+  gem 'capistrano', '~> 3.4.0'
+  gem 'capistrano-rails' #, group: :development
+  gem 'rvm1-capistrano3', require: false
+  gem 'capistrano3-unicorn'
+end
+gem 'unicorn'
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
-gem 'debugger2', group: [:development, :test]
+# gem 'debugger2', group: [:development, :test]
 
 # active record plag-in
 gem 'activerecord-import'
