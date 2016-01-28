@@ -23,7 +23,7 @@ set :deploy_to, "/home/deployer/applications/#{fetch(:application)}"
 # set :pty, true
 
 # Default value for :linked_files is []
-set :linked_files, fetch(:linked_files, []).push('config/database.yml', 'config/secrets.yml')
+set :linked_files, fetch(:linked_files, []).push('config/database.yml', 'config/setting_privates.yml')
 
 # Default value for linked_dirs is []
 # set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system')
@@ -84,11 +84,28 @@ namespace :deploy do
     end
   end
 
-  desc "init files at first time of deploy"
-  task :init do
+  desc "link config files at first time of deploy"
+  task :link_config do
     on roles(:app) do |host|
-      execute "ln -nfs #{current_path}/config/nginx.conf /etc/nginx/sites-enabled/#{fetch(:application)}"
-      execute "sudo ln -nfs #{current_path}/config/unicorn_init.sh /etc/init.d/unicorn_#{fetch(:application)}"
+      execute "ln -nfs #{shared_path}/config/nginx.conf /etc/nginx/sites-enabled/#{fetch(:application)}"
+      execute "ln -nfs #{shared_path}/config/unicorn_init.sh /etc/init.d/unicorn_#{fetch(:application)}"
+      execute "ln -nfs #{shared_path}/config/log_roration.conf /etc/logrotate.d/#{fetch(:application)}.conf"
+    end
+  end
+
+  task :setup_config do
+    on roles(:app) do |host|
+      execute "mkdir -p #{shared_path}/config"
+      # put File.read("config/database.example.yml"), "#{shared_path}/config/database.yml"
+
+      # put File.read("config/server_config/setting_privates.yml"), "#{shared_path}/config/setting_privates.yml"
+
+      upload! "config/server_config/setting_privates.yml", "#{shared_path}/config/setting_privates.yml"
+      upload! "config/server_config/database.yml", "#{shared_path}/config/database.yml"
+
+      upload! "config/server_config/nginx.conf", "#{shared_path}/config/nginx.conf"
+      upload! "config/server_config/unicorn_init.sh", "#{shared_path}/config/unicorn_init.sh"
+      upload! "config/server_config/log_rotation.conf", "#{shared_path}/config/log_rotation.conf"
     end
   end
 

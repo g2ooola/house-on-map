@@ -19,7 +19,8 @@
 /recode/*
 
 /config/database.yml
-/config/secrets.yml
+/config/setting_privates.yml
+/config/server_config/*
 /public/assets/**
 /recode/*
 
