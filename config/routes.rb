@@ -13,6 +13,12 @@ Rails.application.routes.draw do
     get 'search/latlng' => 'search_api#latlng', :defaults => { :format => 'json' }
   end
 
+  namespace :api do
+    namespace :v2 do
+      post 'user_icon/set_user_icon' => 'user_icon#set_user_icon'
+    end
+  end
+
   # You can have the root of your site routed with "root"
   # root 'welcome#index'
 
